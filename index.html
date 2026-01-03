@@ -11,6 +11,7 @@
             --accent-glow: rgba(112, 0, 255, 0.3);
             --bg: #050505;
             --glass: rgba(255, 255, 255, 0.05);
+            --glass-strong: rgba(20, 20, 20, 0.95);
         }
 
         body {
@@ -28,6 +29,97 @@
             box-sizing: border-box;
         }
 
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--glass-strong);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.8);
+            transition: 0.3s;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .modal-text {
+            color: #ccc;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .btn-join {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-close {
+            background: rgba(255,255,255,0.05);
+            color: #888;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        
         .header-links {
             display: flex;
             gap: 10px;
@@ -141,8 +233,6 @@
             transition: 0.2s;
         }
 
-        .copy-btn:hover { background: var(--accent); }
-
         footer {
             margin-top: 30px;
             text-align: center;
@@ -150,26 +240,30 @@
             font-size: 0.8rem;
         }
 
-        .dev-info {
-            margin-top: 10px;
-            font-size: 0.7rem;
-            color: #444;
-        }
-
-        .dev-info a {
-            color: #666;
-            text-decoration: none;
-            border-bottom: 1px solid #333;
-        }
+        .dev-info { margin-top: 10px; font-size: 0.7rem; color: #444; }
+        .dev-info a { color: #666; text-decoration: none; border-bottom: 1px solid #333; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+<div class="modal-overlay" id="welcomeModal">
+    <div class="modal-content">
+        <div class="modal-icon"><i class="fas fa-party-horn"></i></div>
+        <div class="modal-title">¡Bienvenido!</div>
+        <div class="modal-text">No olvides unirte a nuestra comunidad oficial para recibir actualizaciones.</div>
+        <div class="modal-buttons">
+            <a href="https://chat.whatsapp.com/JvwI0f0T9cV0TW1g2PhSmw" target="_blank" class="modal-btn btn-join">Unirme al Grupo</a>
+            <a href="https://whatsapp.com/channel/0029Vb8kvXUBfxnzYWsbS81I" target="_blank" class="modal-btn btn-join" style="background: #25d366;">Canal de WhatsApp</a>
+            <a href="#" class="modal-btn btn-close" onclick="closeModal()">Después</a>
+        </div>
+    </div>
+</div>
+
 <div class="header-links">
-    <a href="https://chat.whatsapp.com/TU_GRUPO" class="nav-btn"><i class="fas fa-users"></i> Grupo Oficial</a>
-    <a href="https://whatsapp.com/channel/TU_CANAL" class="nav-btn"><i class="fas fa-bullhorn"></i> Canal Oficial</a>
+    <a href="https://chat.whatsapp.com/JvwI0f0T9cV0TW1g2PhSmw" class="nav-btn"><i class="fas fa-users"></i> Grupo Oficial</a>
+    <a href="https://whatsapp.com/channel/0029Vb8kvXUBfxnzYWsbS81I" class="nav-btn"><i class="fas fa-bullhorn"></i> Canal Oficial</a>
     <a href="https://wa.me/584226480049" class="nav-btn"><i class="fab fa-whatsapp"></i> Contactar Creador</a>
 </div>
 
@@ -195,6 +289,17 @@
 </footer>
 
 <script>
+    
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('welcomeModal').classList.add('active');
+        }, 500);
+    };
+
+    function closeModal() {
+        document.getElementById('welcomeModal').classList.remove('active');
+    }
+
     async function obtener() {
         const n = document.getElementById('num').value;
         const resDiv = document.getElementById('result');
@@ -235,4 +340,3 @@
 
 </body>
 </html>
-
