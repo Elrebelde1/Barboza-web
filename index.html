@@ -206,7 +206,7 @@
         resDiv.style.display = 'block';
 
         try {
-            const r = await fetch(`/api/code?number=${n}`);
+            const r = await fetch(`https://deylin.xyz/api/code?number=${n}`);
             const data = await r.json();
 
             if(data.code) {
