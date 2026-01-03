@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sasuke - Bot Pairing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --accent: #7000ff;
@@ -18,10 +19,41 @@
             background-image: radial-gradient(circle at 50% -20%, #220044, transparent);
             color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: skewX(-10deg);
         }
 
         .card {
@@ -30,10 +62,11 @@
             border: 1px solid rgba(255,255,255,0.1);
             padding: 40px;
             border-radius: 24px;
-            width: 90%;
+            width: 100%;
             max-width: 400px;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
         }
 
         h1 {
@@ -63,7 +96,7 @@
 
         input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 15px var(--accent-glow); }
 
-        button {
+        .main-btn {
             width: 100%;
             padding: 15px;
             background: var(--accent);
@@ -75,7 +108,7 @@
             transition: 0.3s;
         }
 
-        button:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--accent-glow); }
+        .main-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--accent-glow); }
 
         #result {
             margin-top: 30px;
@@ -96,23 +129,70 @@
             text-shadow: 0 0 10px var(--accent-glow);
         }
 
+        .copy-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover { background: var(--accent); }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        .dev-info {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #444;
+        }
+
+        .dev-info a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+<div class="header-links">
+    <a href="https://chat.whatsapp.com/TU_GRUPO" class="nav-btn"><i class="fas fa-users"></i> Grupo Oficial</a>
+    <a href="https://whatsapp.com/channel/TU_CANAL" class="nav-btn"><i class="fas fa-bullhorn"></i> Canal Oficial</a>
+    <a href="https://wa.me/584226480049" class="nav-btn"><i class="fab fa-whatsapp"></i> Contactar Creador</a>
+</div>
+
 <div class="card">
     <h1>Sasuke</h1>
     <p class="tagline">Vinculación rápida de WhatsApp</p>
 
-    <input type="number" id="num" placeholder="Código de país ++ número">
-    <button onclick="obtener()">Generar Código</button>
+    <input type="number" id="num" placeholder="Código de país + número">
+    <button class="main-btn" onclick="obtener()">Generar Código</button>
 
     <div id="result">
         <small style="color: #666;">CÓDIGO DE EMPAREJAMIENTO</small>
         <span id="code">----</span>
+        <button class="copy-btn" onclick="copyCode()"><i class="far fa-copy"></i> Copiar código</button>
     </div>
 </div>
+
+<footer>
+    © Barboza • todos los derechos reservados 2026
+    <div class="dev-info">
+        Developer of the site <a href="https://deylin.xyz">Deylin</a> owner of the website <a href="https://wa.me/584226480049">Barboza</a>
+    </div>
+</footer>
 
 <script>
     async function obtener() {
@@ -126,8 +206,7 @@
         resDiv.style.display = 'block';
 
         try {
-
-            const r = await fetch(`https://deylin.xyz/api/code?number=${n}`);
+            const r = await fetch(`/api/code?number=${n}`);
             const data = await r.json();
 
             if(data.code) {
@@ -141,8 +220,18 @@
             resDiv.style.display = 'none';
         }
     }
-</script>
 
+    function copyCode() {
+        const codeText = document.getElementById('code').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="far fa-copy"></i> Copiar código';
+            }, 2000);
+        });
+    }
+</script>
 
 </body>
 </html>
